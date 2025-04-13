@@ -13,7 +13,7 @@ import javafx.stage.Stage;
 public class MainController extends BaseController {
 
     public MainController() {
-ownerWindowType = EWindowType.WINDOW_MAIN;
+        ownerWindowType = EWindowType.WINDOW_MAIN;
     }
 
     @FXML
@@ -23,9 +23,6 @@ ownerWindowType = EWindowType.WINDOW_MAIN;
     private URL location;
 
     @FXML
-    private Button comebackActionButton;
-
-    @FXML
     private Button decryptActionButton;
 
     @FXML
@@ -33,11 +30,14 @@ ownerWindowType = EWindowType.WINDOW_MAIN;
 
     @FXML
     void initialize() {
-        initOwnerStage(decryptActionButton);
+
         decryptActionButton.setOnAction(e -> {
-            ManagerWindow.getInstance().openWindow(this, EWindowType.WINDOW_DECRYPT);
+            ManagerWindow.getInstance().switchTo(this, EWindowType.WINDOW_DECRYPT);
         });
 
+        encryptActionButton.setOnAction(e -> {
+            ManagerWindow.getInstance().switchTo(this, EWindowType.WINDOW_ENCRYPT);
+        });
     }
 
 }

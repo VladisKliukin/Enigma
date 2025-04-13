@@ -26,7 +26,7 @@ public class DecryptController extends BaseController {
     @FXML
     void initialize() {
         comebackActionButton.setOnAction(e -> {
-            ManagerWindow.getInstance().openWindow(this,EWindowType.WINDOW_MAIN);
+            ManagerWindow.getInstance().switchTo(this,EWindowType.WINDOW_MAIN);
         });
 
     }

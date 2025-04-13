@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.paint.LinearGradient?>
@@ -47,15 +45,6 @@
          <font>
             <Font name="Century" size="33.0" />
          </font>
-      </Button>
-      <Button fx:id="comebackActionButton" layoutX="901.0" layoutY="18.0" mnemonicParsing="false" prefHeight="70.0" prefWidth="70.0" AnchorPane.bottomAnchor="712.0" AnchorPane.leftAnchor="901.0" AnchorPane.rightAnchor="21.0" AnchorPane.topAnchor="18.0">
-         <graphic>
-            <ImageView fitHeight="62.0" fitWidth="91.0" opacity="0.66" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../../Assets/40174_arrow_right_icon.png" />
-               </image>
-            </ImageView>
-         </graphic>
       </Button>
    </children>
 </AnchorPane>

@@ -12,9 +12,10 @@ import java.util.HashMap;
 
 public class ManagerWindow {
     private static ManagerWindow instance;
+    private Stage primaryStage;
 
-    WindowContext windowContext = new WindowContext();
     HashMap<EWindowType, WindowContext> windows = new HashMap<>();
+
 
     private ManagerWindow() {
     }
@@ -26,48 +27,31 @@ public class ManagerWindow {
         return instance;
     }
 
-    public void openWindow(BaseController controller, EWindowType windowType) {
 
-
-        if (windows.get(controller.getOwnerWindowType()) == null) {
-            windows.put(controller.getOwnerWindowType(), windowContext.initContext(controller, windowType));
-        }
-
-        WindowContext context = windows.get(windowType);
-        if (context == null) {
-            if (controller.getStage() != null) {
-                controller.getStage().hide();
-            }
-
-
-            try {
-                FXMLLoader loader = new FXMLLoader();
-                loader.setLocation(getClass().getResource(windowType.getUrl()));
-                Parent root = loader.load();
-
-
-                Stage newStage = new Stage();
-                newStage.setScene(new Scene(root));
-                newStage.setTitle("E N I G M A");
-
-                BaseController newController = loader.getController();
-                WindowContext newContext = windowContext.initContext(newController, windowType);
-                newContext.ownerStage = newStage;
-                // Сохраняем контекст в коллекцию
-                windows.put(windowType, newContext);
-
-
-                newStage.showAndWait();
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else {
-            if (windows.get(windowType).ownerStage != null) {
-                windows.get(windowType).ownerStage.showAndWait();
-            }else {
-                System.out.println("Ошибка: ownerStage для текущего окна не инициализирован.");
-            }
-        }
+    public void setPrimaryStage(Stage stage) {
+        this.primaryStage = stage;
     }
+
+    public void switchTo(BaseController controller, EWindowType windowType) {
+
+        try {
+            WindowContext context = windows.get(windowType);
+            if (context == null) {
+                context = new WindowContext();
+                FXMLLoader loader = new FXMLLoader(getClass().getResource(windowType.getUrl()));
+                Parent root = loader.load();
+                Scene scene = new Scene(root);
+                controller.setOwnerScene(scene);
+                context = context.initContext(controller, windowType);
+                windows.put(windowType, context);
+            }
+            primaryStage.setScene(context.ownerScene);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        System.out.println(windows);
+    }
+
+
 }
