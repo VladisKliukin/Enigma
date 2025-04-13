@@ -3,17 +3,26 @@ package com.example.enigma.Controllers;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import com.example.enigma.Assistants.EncryptionAssistant;
 import com.example.enigma.Enums.EWindowType;
 import com.example.enigma.Managers.ManagerWindow;
+import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ProgressBar;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
+import javafx.scene.paint.Color;
+import javafx.util.Duration;
 
 public class EncryptController extends BaseController {
+    //---------------------------------------------------------------------------------------------------------
+    EncryptionAssistant encryptionAssistant;
 
+    public EncryptController() {
+        ownerWindowType = EWindowType.WINDOW_DECRYPT;
+        encryptionAssistant = new EncryptionAssistant(this);
+    }
+
+    //---------------------------------------------------------------------------------------------------------
     @FXML
     private ResourceBundle resources;
 
@@ -42,7 +51,7 @@ public class EncryptController extends BaseController {
     private Label encryptionErrorText;
 
     @FXML
-    private Label erorSupportLanguage;
+    private Label errorSupportLanguage;
 
     @FXML
     private Label errorSavingToFileText;
@@ -56,19 +65,64 @@ public class EncryptController extends BaseController {
     @FXML
     private Button saveToFileActionButton;
 
+    @FXML
+    private TextField numberFieldBox;
+    @FXML
+    private Label numberFieldText;
 
-    public EncryptController() {
-        ownerWindowType = EWindowType.WINDOW_DECRYPT;
-    }
-
+    //---------------------------------------------------------------------------------------------------------
     @FXML
     void initialize() {
         comebackActionButton.setOnAction(e -> {
             ManagerWindow.getInstance().switchTo(this, EWindowType.WINDOW_MAIN);
         });
 
+        encryptTextActionButton.setOnAction(e -> handleTransferText());
 
+        numberFieldBox.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*")) {
+                numberFieldBox.setText(newValue.replaceAll("[^\\d]", ""));
+            }
+        });
     }
+    //---------------------------------------------------------------------------------------------------------
+
+    private void handleTransferText() {
+
+        String text = encryptionAssistant.applyEncryption(encryptTextBox.getText(), numberFieldBox.getText());
+        if (text == null) {
+            encryptTextBox.clear();
+            return;
+        }
+        ciphertextBox.setText(text);
+    }
+
+    //---------------------------------------------------------------------------------------------------------
+    public void hideOrShow(Label label, boolean bisVisible) {
+        if (label == null) return;
+
+        PauseTransition pause = new PauseTransition(Duration.seconds(2));
+
+        label.setVisible(!bisVisible);
+        pause.setOnFinished(e -> label.setVisible(bisVisible));
+
+        pause.play();
+    }
+
+    //---------------------------------------------------------------------------------------------------------
+
+    public Label getErrorSupportLanguage() {
+        return errorSupportLanguage;
+    }
+    //---------------------------------------------------------------------------------------------------------
+
+    public void flashLabelColor() {
+        PauseTransition pause = new PauseTransition(Duration.seconds(0.5));
+        numberFieldText.setTextFill(Color.RED);
+        pause.setOnFinished(e -> numberFieldText.setTextFill(Color.rgb(191, 191, 191)));
+        pause.play();
+    }
+    //---------------------------------------------------------------------------------------------------------
 
 }
 

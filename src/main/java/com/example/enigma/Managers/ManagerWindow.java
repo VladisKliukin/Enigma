@@ -16,6 +16,7 @@ public class ManagerWindow {
 
     HashMap<EWindowType, WindowContext> windows = new HashMap<>();
 
+    //---------------------------------------------------------------------------------------------------------
 
     private ManagerWindow() {
     }
@@ -27,11 +28,13 @@ public class ManagerWindow {
         return instance;
     }
 
+    //---------------------------------------------------------------------------------------------------------
 
 
     public void setPrimaryStage(Stage stage) {
         this.primaryStage = stage;
     }
+    //---------------------------------------------------------------------------------------------------------
 
     public void switchTo(BaseController controller, EWindowType windowType) {
 
@@ -51,8 +54,9 @@ public class ManagerWindow {
             e.printStackTrace();
         }
 
-        System.out.println(windows);
+
     }
 
+    //---------------------------------------------------------------------------------------------------------
 
 }

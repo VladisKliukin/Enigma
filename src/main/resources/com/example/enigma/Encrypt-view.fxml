@@ -111,10 +111,20 @@
             <Button fx:id="createFileNameActionButton" mnemonicParsing="false" text="Save" />
          </children>
       </HBox>
-      <Label fx:id="erorSupportLanguage" layoutX="79.0" layoutY="482.0" text="the program does not support this language" textFill="#ff3333" visible="false">
+      <Label fx:id="errorSupportLanguage" layoutX="79.0" layoutY="482.0" text="the program does not support this language" textFill="#ff3333" visible="false">
          <font>
             <Font size="42.0" />
          </font>
       </Label>
+      <HBox layoutX="24.0" layoutY="350.0" prefHeight="49.0" prefWidth="321.0" AnchorPane.leftAnchor="24.0">
+         <children>
+            <Label fx:id="numberFieldText" text="number of shifts: " textFill="#bfbfbffa">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <TextField fx:id="numberFieldBox" prefHeight="25.0" prefWidth="32.0" />
+         </children>
+      </HBox>
     </children>
 </AnchorPane>
