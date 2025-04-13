@@ -1,5 +1,6 @@
 package com.example.enigma;
 
+import com.example.enigma.Managers.ManagerWindow;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -15,6 +16,7 @@ public class MainApplication extends Application {
         stage.setTitle("E N I G M A");
         stage.setScene(scene);
         stage.show();
+        ManagerWindow.getInstance().setPrimaryStage(stage);
     }
 
     public static void main(String[] args) {
