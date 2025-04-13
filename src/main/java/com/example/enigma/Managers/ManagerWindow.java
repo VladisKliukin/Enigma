@@ -28,6 +28,7 @@ public class ManagerWindow {
     }
 
 
+
     public void setPrimaryStage(Stage stage) {
         this.primaryStage = stage;
     }
