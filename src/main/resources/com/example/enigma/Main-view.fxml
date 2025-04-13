@@ -12,7 +12,7 @@
    <children>
       <Text layoutX="21.0" layoutY="78.0" strokeType="OUTSIDE" strokeWidth="0.0" text="E N I G M A" wrappingWidth="508.13671875" AnchorPane.bottomAnchor="707.8603515625" AnchorPane.leftAnchor="21.0" AnchorPane.rightAnchor="470.86328125" AnchorPane.topAnchor="13.92041015625">
          <font>
-            <Font name="Century" size="65.0" />
+            <Font name="Georgia" size="65.0" />
          </font>
          <fill>
             <LinearGradient endX="0.5450236966824644" endY="0.5971563981042654" startY="0.05213270142180093">
@@ -38,12 +38,12 @@
       </Text>
       <Button fx:id="decryptActionButton" layoutX="142.0" layoutY="303.0" mnemonicParsing="false" prefHeight="78.0" prefWidth="691.0" style="-fx-background-radius: 20; -fx-border-color: #000000; -fx-border-radius: 20;" text="DECRYPT" AnchorPane.bottomAnchor="419.0" AnchorPane.leftAnchor="142.0" AnchorPane.rightAnchor="167.0" AnchorPane.topAnchor="303.0">
          <font>
-            <Font name="Century" size="33.0" />
+            <Font name="Georgia" size="33.0" />
          </font>
       </Button>
       <Button fx:id="encryptActionButton" layoutX="142.0" layoutY="480.0" mnemonicParsing="false" prefHeight="78.0" prefWidth="691.0" style="-fx-background-radius: 20; -fx-border-color: #000000; -fx-border-radius: 20;" text="ENCRYPT" AnchorPane.bottomAnchor="219.0" AnchorPane.leftAnchor="142.0" AnchorPane.rightAnchor="167.0" AnchorPane.topAnchor="503.0">
          <font>
-            <Font name="Century" size="33.0" />
+            <Font name="Georgia" size="33.0" />
          </font>
       </Button>
    </children>
