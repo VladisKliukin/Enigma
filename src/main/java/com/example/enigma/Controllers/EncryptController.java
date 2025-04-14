@@ -12,6 +12,9 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
+import org.fxmisc.richtext.StyleClassedTextArea;
+import org.fxmisc.richtext.model.StyleSpans;
+import org.fxmisc.richtext.model.StyleSpansBuilder;
 
 public class EncryptController extends BaseController {
     //---------------------------------------------------------------------------------------------------------
@@ -19,7 +22,7 @@ public class EncryptController extends BaseController {
 
     public EncryptController() {
         ownerWindowType = EWindowType.WINDOW_DECRYPT;
-        encryptionAssistant = new EncryptionAssistant(this);
+        encryptionAssistant = new EncryptionAssistant();
     }
 
     //---------------------------------------------------------------------------------------------------------
@@ -77,7 +80,7 @@ public class EncryptController extends BaseController {
             ManagerWindow.getInstance().switchTo(this, EWindowType.WINDOW_MAIN);
         });
 
-        encryptTextActionButton.setOnAction(e -> handleTransferText());
+        encryptTextActionButton.setOnAction(e -> handleEventButtonEncrypt());
 
         numberFieldBox.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.matches("\\d*")) {
@@ -87,32 +90,41 @@ public class EncryptController extends BaseController {
     }
     //---------------------------------------------------------------------------------------------------------
 
-    private void handleTransferText() {
+    private void handleEventButtonEncrypt() {
 
-        String text = encryptionAssistant.applyEncryption(encryptTextBox.getText(), numberFieldBox.getText());
-        if (text == null) {
-            encryptTextBox.clear();
+        String encryptText = encryptTextBox.getText();
+        int shift = encryptionAssistant.isShiftValid(numberFieldBox.getText());
+        boolean bIsValidOperation = true;
+
+        if (!encryptionAssistant.isEnglishText(encryptText)) {
+            hideOrShow(errorSupportLanguage);
+            bIsValidOperation = false;
+        }
+
+
+        if (shift == 0) {
+            flashLabelColor();
+            bIsValidOperation = false;
             return;
         }
-        ciphertextBox.setText(text);
+
+        if (bIsValidOperation) {
+            String ciphertextText = encryptionAssistant.applyEncryption(encryptText, shift);
+
+            ciphertextBox.setText(ciphertextText);
+        }
     }
 
     //---------------------------------------------------------------------------------------------------------
-    public void hideOrShow(Label label, boolean bisVisible) {
+    public void hideOrShow(Label label) {
         if (label == null) return;
 
         PauseTransition pause = new PauseTransition(Duration.seconds(2));
 
-        label.setVisible(!bisVisible);
-        pause.setOnFinished(e -> label.setVisible(bisVisible));
+        label.setVisible(true);
+        pause.setOnFinished(e -> label.setVisible(false));
 
         pause.play();
-    }
-
-    //---------------------------------------------------------------------------------------------------------
-
-    public Label getErrorSupportLanguage() {
-        return errorSupportLanguage;
     }
     //---------------------------------------------------------------------------------------------------------
 
@@ -121,6 +133,11 @@ public class EncryptController extends BaseController {
         numberFieldText.setTextFill(Color.RED);
         pause.setOnFinished(e -> numberFieldText.setTextFill(Color.rgb(191, 191, 191)));
         pause.play();
+    }
+
+    //---------------------------------------------------------------------------------------------------------
+    public void clearEncryptTextBox() {
+        encryptTextBox.clear();
     }
     //---------------------------------------------------------------------------------------------------------
 

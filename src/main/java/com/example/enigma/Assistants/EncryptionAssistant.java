@@ -1,12 +1,16 @@
 package com.example.enigma.Assistants;
 
-import com.example.enigma.Controllers.EncryptController;
 
 public class EncryptionAssistant {
-    EncryptController controller;
+    //---------------------------------------------------------------------------------------------------------
 
-    public EncryptionAssistant(EncryptController controller) {
-        this.controller = controller;
+    public int isShiftValid(String text) {
+        int shift = 0;
+        if (!text.isEmpty()) {
+            shift = Integer.parseInt(text);
+        }
+
+        return shift;
     }
     //---------------------------------------------------------------------------------------------------------
 
@@ -22,18 +26,8 @@ public class EncryptionAssistant {
     }
 
     //---------------------------------------------------------------------------------------------------------
-    public String applyEncryption(String text, String shiftText) {
+    public String applyEncryption(String text, int shift) {
 
-        int shift = isShiftValid(shiftText);
-        if (shift == 0) {
-            controller.flashLabelColor();
-            return null;
-        }
-
-        if (!isEnglishText(text)) {
-            controller.hideOrShow(controller.getErrorSupportLanguage(), isEnglishText(text));
-            return null;
-        }
 
 
         StringBuilder encryptedText = new StringBuilder();
@@ -50,17 +44,7 @@ public class EncryptionAssistant {
         return encryptedText.toString();
 
     }
-    //---------------------------------------------------------------------------------------------------------
 
-    public int isShiftValid(String text) {
-        int number = 0;
-
-        if (!text.isEmpty()) {
-            number = Integer.parseInt(text);
-        }
-
-        return number;
-    }
     //---------------------------------------------------------------------------------------------------------
 
 }
