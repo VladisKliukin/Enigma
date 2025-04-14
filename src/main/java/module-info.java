@@ -4,7 +4,7 @@ module com.example.enigma {
 
     requires com.dlsc.formsfx;
     requires java.xml;
-    requires org.fxmisc.richtext;
+
 
     opens com.example.enigma to javafx.fxml;
     exports com.example.enigma;
