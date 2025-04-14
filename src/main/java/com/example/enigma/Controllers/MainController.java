@@ -15,6 +15,7 @@ public class MainController extends BaseController {
     public MainController() {
         ownerWindowType = EWindowType.WINDOW_MAIN;
     }
+    //---------------------------------------------------------------------------------------------------------
 
     @FXML
     private ResourceBundle resources;
@@ -27,6 +28,7 @@ public class MainController extends BaseController {
 
     @FXML
     private Button encryptActionButton;
+    //---------------------------------------------------------------------------------------------------------
 
     @FXML
     void initialize() {
@@ -39,5 +41,6 @@ public class MainController extends BaseController {
             ManagerWindow.getInstance().switchTo(this, EWindowType.WINDOW_ENCRYPT);
         });
     }
+    //---------------------------------------------------------------------------------------------------------
 
 }

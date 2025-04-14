@@ -5,6 +5,7 @@ module com.example.enigma {
     requires com.dlsc.formsfx;
     requires java.xml;
 
+
     opens com.example.enigma to javafx.fxml;
     exports com.example.enigma;
     exports com.example.enigma.Controllers;

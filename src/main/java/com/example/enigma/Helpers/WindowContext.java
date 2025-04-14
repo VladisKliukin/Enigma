@@ -11,6 +11,7 @@ public class WindowContext {
     public Scene ownerScene;
 
 
+
     public WindowContext initContext(BaseController controller, EWindowType windowType) {
 
         ownerController = controller;
