@@ -1,5 +1,9 @@
 package com.example.enigma.Controllers;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -14,6 +18,8 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
+import javafx.stage.FileChooser;
+import javafx.stage.Window;
 import javafx.util.Duration;
 
 public class EncryptController extends BaseController {
@@ -85,12 +91,15 @@ public class EncryptController extends BaseController {
         });
 
         encryptTextActionButton.setOnAction(e -> handleEventButtonEncrypt());
+        saveToFileActionButton.setOnAction(e -> handleEventSaveToFile());
 
         numberFieldBox.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.matches("\\d*")) {
                 numberFieldBox.setText(newValue.replaceAll("[^\\d]", ""));
             }
         });
+
+
     }
     //---------------------------------------------------------------------------------------------------------
 
@@ -115,7 +124,43 @@ public class EncryptController extends BaseController {
             // bIsEncryptionCreated = true;
             String ciphertextText = encryptionAssistant.applyEncryption(encryptText, shift);
 
-            startActionEncryption(ciphertextText,5);
+            startActionEncryption(ciphertextText, 5);
+        }
+    }
+
+    //---------------------------------------------------------------------------------------------------------
+    private void handleEventSaveToFile() {
+        Window ownerStage = saveToFileActionButton.getScene().getWindow();
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Text Files", "*.txt"));
+        File file = fileChooser.showSaveDialog(ownerStage);
+
+        if (file != null) {
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+                writer.write(ciphertextBox.getText());
+                System.out.println("Файл сохранен: " + file.getAbsolutePath());
+
+
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Файл сохранён");
+                alert.setHeaderText(null);
+                alert.setContentText("Файл успешно сохранён:\n");
+                alert.initOwner(ownerStage);
+                alert.showAndWait();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                System.out.println("Ошибка при сохранении файла.");
+
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Ошибка");
+                alert.setHeaderText("Ошибка при сохранении файла");
+                alert.setContentText(e.getMessage());
+                alert.initOwner(ownerStage);
+                alert.showAndWait();
+            }
+        } else {
+            System.out.println("Сохранение отменено.");
         }
     }
 
@@ -153,7 +198,7 @@ public class EncryptController extends BaseController {
     }
     //---------------------------------------------------------------------------------------------------------
 
-    private void handleCiphertextText(String text,double delay) {
+    private void handleCiphertextText(String text, double delay) {
 
         ciphertextBox.setText(text);
 
@@ -180,7 +225,7 @@ public class EncryptController extends BaseController {
     }
     //---------------------------------------------------------------------------------------------------------
 
-    private void startActionEncryption(String text,double delay) {
+    private void startActionEncryption(String text, double delay) {
 
         progressBarEvent.setProgress(0);
         progressBarEvent.setVisible(true);
@@ -193,7 +238,7 @@ public class EncryptController extends BaseController {
                 new KeyFrame(Duration.ZERO, new KeyValue(progressBarEvent.progressProperty(), 0)),
                 new KeyFrame(duration, new KeyValue(progressBarEvent.progressProperty(), 1))
         );
-            handleCiphertextText(text,delay);
+        handleCiphertextText(text, delay);
         timeline.setOnFinished(e -> {
 
             progressBarEvent.setVisible(false);
