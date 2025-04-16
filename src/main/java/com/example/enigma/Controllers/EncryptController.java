@@ -95,7 +95,7 @@ public class EncryptController extends BaseController {
 
         numberFieldBox.textProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue.matches("\\d*")) {
-                numberFieldBox.setText(newValue.replaceAll("[^\\d]", ""));
+                numberFieldBox.setText(newValue.replaceAll("\\D", ""));
             }
         });
 
@@ -125,6 +125,7 @@ public class EncryptController extends BaseController {
             String ciphertextText = encryptionAssistant.applyEncryption(encryptText, shift);
 
             startActionEncryption(ciphertextText, 5);
+            keyEncryptText.setText(encryptionAssistant.createEncryptionKeyNew(ciphertextText,shift));
         }
     }
 
@@ -188,7 +189,7 @@ public class EncryptController extends BaseController {
     public void handleEncryptionKey() {
         keyEncryptBox.setOpacity(0);
         keyEncryptBox.setVisible(true);
-        keyEncryptText.setText(encryptionAssistant.createEncryptionKey());
+       // keyEncryptText.setText(encryptionAssistant.createEncryptionKeyNew());
 
         Timeline timeline = new Timeline(
                 new KeyFrame(Duration.ZERO, new KeyValue(keyEncryptBox.opacityProperty(), 0)),
@@ -226,6 +227,8 @@ public class EncryptController extends BaseController {
     //---------------------------------------------------------------------------------------------------------
 
     private void startActionEncryption(String text, double delay) {
+
+        if (text == null) return;
 
         progressBarEvent.setProgress(0);
         progressBarEvent.setVisible(true);
