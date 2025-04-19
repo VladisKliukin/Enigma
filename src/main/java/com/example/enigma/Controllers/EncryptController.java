@@ -113,7 +113,7 @@ public class EncryptController extends BaseController {
             String ciphertextText = encryptionAssistant.applyEncryption(encryptText, shift);
 
             startActionEncryption(ciphertextText, 5);
-            keyEncryptText.setText(encryptionAssistant.createEncryptionKeyNew(ciphertextText, shift));
+            keyEncryptText.setText(encryptionAssistant.createEncryptionKey(ciphertextText, shift));
         }
     }
 
