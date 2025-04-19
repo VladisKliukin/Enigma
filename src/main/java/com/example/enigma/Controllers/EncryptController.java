@@ -46,25 +46,13 @@ public class EncryptController extends BaseController {
     private Button comebackActionButton;
 
     @FXML
-    private Button createFileNameActionButton;
-
-    @FXML
-    private HBox createFileNameBox;
-
-    @FXML
     private Button encryptTextActionButton;
 
     @FXML
     private TextArea encryptTextBox;
 
     @FXML
-    private Label encryptionErrorText;
-
-    @FXML
     private Label errorSupportLanguage;
-
-    @FXML
-    private Label errorSavingToFileText;
 
     @FXML
     private HBox keyEncryptBox;
@@ -125,7 +113,7 @@ public class EncryptController extends BaseController {
             String ciphertextText = encryptionAssistant.applyEncryption(encryptText, shift);
 
             startActionEncryption(ciphertextText, 5);
-            keyEncryptText.setText(encryptionAssistant.createEncryptionKeyNew(ciphertextText,shift));
+            keyEncryptText.setText(encryptionAssistant.createEncryptionKeyNew(ciphertextText, shift));
         }
     }
 
@@ -138,31 +126,28 @@ public class EncryptController extends BaseController {
 
         if (file != null) {
             try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
+                writer.write("Key: " + keyEncryptText.getText());
+                writer.newLine();
+                writer.newLine();
                 writer.write(ciphertextBox.getText());
-                System.out.println("Файл сохранен: " + file.getAbsolutePath());
-
-
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Файл сохранён");
-                alert.setHeaderText(null);
-                alert.setContentText("Файл успешно сохранён:\n");
-                alert.initOwner(ownerStage);
-                alert.showAndWait();
+                createPopUpWindow(Alert.AlertType.INFORMATION, ownerStage, "File saved", "File saved successfully:\n" + file.getAbsolutePath());
 
             } catch (IOException e) {
                 e.printStackTrace();
-                System.out.println("Ошибка при сохранении файла.");
 
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Ошибка");
-                alert.setHeaderText("Ошибка при сохранении файла");
-                alert.setContentText(e.getMessage());
-                alert.initOwner(ownerStage);
-                alert.showAndWait();
+                createPopUpWindow(Alert.AlertType.ERROR, ownerStage, "Error", "Error saving file:\n" + e.getMessage());
             }
-        } else {
-            System.out.println("Сохранение отменено.");
         }
+    }
+
+    //---------------------------------------------------------------------------------------------------------
+    private void createPopUpWindow(Alert.AlertType alertType, Window owner, String title, String message) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.initOwner(owner);
+        alert.showAndWait();
     }
 
     //---------------------------------------------------------------------------------------------------------
@@ -189,7 +174,7 @@ public class EncryptController extends BaseController {
     public void handleEncryptionKey() {
         keyEncryptBox.setOpacity(0);
         keyEncryptBox.setVisible(true);
-       // keyEncryptText.setText(encryptionAssistant.createEncryptionKeyNew());
+        // keyEncryptText.setText(encryptionAssistant.createEncryptionKeyNew());
 
         Timeline timeline = new Timeline(
                 new KeyFrame(Duration.ZERO, new KeyValue(keyEncryptBox.opacityProperty(), 0)),
