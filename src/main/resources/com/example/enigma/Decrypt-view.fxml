@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.paint.Color?>
 <?import javafx.scene.paint.LinearGradient?>
 <?import javafx.scene.paint.Stop?>
@@ -14,7 +19,7 @@
     <children>
         <Text layoutX="21.0" layoutY="78.0" strokeType="OUTSIDE" strokeWidth="0.0" text="E N I G M A" wrappingWidth="508.13671875" AnchorPane.bottomAnchor="707.8603515625" AnchorPane.leftAnchor="21.0" AnchorPane.rightAnchor="470.86328125" AnchorPane.topAnchor="13.92041015625">
             <font>
-                <Font name="Century" size="65.0" />
+                <Font name="Georgia" size="65.0" />
             </font>
             <fill>
                 <LinearGradient endX="0.5450236966824644" endY="0.5971563981042654" startY="0.05213270142180093">
@@ -47,5 +52,64 @@
                 </ImageView>
             </graphic>
         </Button>
+        <TextArea fx:id="decryptedTextBox" editable="false" layoutX="21.0" layoutY="103.0" prefHeight="223.0" prefWidth="952.0" text="&#10;&#10;" wrapText="true" AnchorPane.bottomAnchor="474.0" AnchorPane.leftAnchor="24.0" AnchorPane.rightAnchor="24.0" AnchorPane.topAnchor="103.0">
+            <font>
+                <Font name="Georgia" size="15.0" />
+            </font></TextArea>
+        <TextArea fx:id="decryptTextBox" layoutX="24.0" layoutY="354.0" prefHeight="221.0" prefWidth="952.0" wrapText="true" AnchorPane.leftAnchor="24.0" AnchorPane.rightAnchor="24.0" AnchorPane.topAnchor="400.0">
+            <font>
+                <Font size="15.0" />
+            </font></TextArea>
+        <Text fill="#b8b6b61d" layoutX="175.0" layoutY="247.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Decrypted Text" AnchorPane.bottomAnchor="531.953125" AnchorPane.leftAnchor="175.0" AnchorPane.rightAnchor="176.4375" AnchorPane.topAnchor="158.96875">
+            <font>
+                <Font name="Georgia" size="96.0" />
+            </font>
+        </Text>
+        <Button fx:id="decryptTextActionButton" layoutX="40.0" layoutY="684.0" mnemonicParsing="false" prefHeight="56.0" prefWidth="280.0" style="-fx-background-radius: 10;" text="DECRYPT TEXT" AnchorPane.leftAnchor="24.0">
+            <font>
+                <Font name="Georgia" size="31.0" />
+            </font>
+        </Button>
+        <Button fx:id="openFileActionButton" layoutX="594.0" layoutY="686.0" mnemonicParsing="false" prefHeight="56.0" prefWidth="280.0" style="-fx-background-radius: 10;" text="OPEN FILE" AnchorPane.rightAnchor="24.0">
+            <font>
+                <Font name="Georgia" size="31.0" />
+            </font>
+        </Button>
+        <HBox fx:id="keyEncryptBox" layoutX="590.0" layoutY="344.0" prefHeight="55.0" prefWidth="400.0" AnchorPane.rightAnchor="17.0">
+            <children>
+                <Label text="Key Encrypt:  " textFill="#bfbfbf">
+                    <font>
+                        <Font size="27.0" />
+                    </font>
+                </Label>
+                <TextField fx:id="keyDecryptionText">
+                    <font>
+                        <Font name="Georgia" size="18.0" />
+                    </font>
+                </TextField>
+            </children>
+        </HBox>
+        <ProgressBar fx:id="progressBarEvent" layoutX="371.0" layoutY="633.0" prefHeight="29.0" prefWidth="952.0" progress="0.71" visible="false" AnchorPane.leftAnchor="24.0" AnchorPane.rightAnchor="24.0" AnchorPane.topAnchor="640.0" />
+        <Label fx:id="errorSavingToFileText" layoutX="733.0" layoutY="640.0" prefHeight="29.0" prefWidth="235.0" text="Error saving to file" textFill="#ff4343" visible="false" AnchorPane.leftAnchor="733.0" AnchorPane.rightAnchor="32.0">
+            <font>
+                <Font name="Georgia" size="24.0" />
+            </font>
+        </Label>
+        <HBox fx:id="createFileNameBox" layoutX="680.0" layoutY="638.0" prefHeight="29.0" prefWidth="300.0" visible="false" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="645.0">
+            <children>
+                <Label text="File name:" textFill="#111010">
+                    <font>
+                        <Font name="Georgia" size="17.0" />
+                    </font>
+                </Label>
+                <TextField />
+                <Button fx:id="createFileNameActionButton" mnemonicParsing="false" text="Save" />
+            </children>
+        </HBox>
+        <Label fx:id="errorSupportLanguage" layoutX="79.0" layoutY="482.0" text="the program does not support this language" textFill="#ff3333" visible="false">
+            <font>
+                <Font size="42.0" />
+            </font>
+        </Label>
     </children>
 </AnchorPane>
