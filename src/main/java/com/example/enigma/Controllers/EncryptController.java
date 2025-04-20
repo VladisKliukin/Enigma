@@ -7,8 +7,10 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import com.example.enigma.Assistants.DecryptAssistant;
 import com.example.enigma.Assistants.EncryptionAssistant;
 import com.example.enigma.Enums.EWindowType;
+import com.example.enigma.Helpers.CipherKeyGenerator;
 import com.example.enigma.Managers.ManagerWindow;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -114,6 +116,13 @@ public class EncryptController extends BaseController {
 
             startActionEncryption(ciphertextText, 5);
             keyEncryptText.setText(encryptionAssistant.createEncryptionKey(ciphertextText, shift));
+            //------------------------------------------
+            CipherKeyGenerator generator = new CipherKeyGenerator();
+            DecryptAssistant decryptAssistant = new DecryptAssistant();
+            String key = decryptAssistant.decryptKey(keyEncryptText.getText());
+            System.out.printf("Key: " + key+ "\n");
+            System.out.printf("Key real: " + generator.extractRealKeyPart(keyEncryptText.getText(), generator.getReversedAlphabetMap()));
+            System.out.printf("\nKey Shift: " + Integer.toString(decryptAssistant.extractShiftFromKey(ciphertextText,keyEncryptText.getText())));
         }
     }
 
