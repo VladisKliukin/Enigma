@@ -3,7 +3,7 @@ package com.example.enigma.Helpers;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.io.File;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -12,11 +12,7 @@ import java.util.*;
 public class CipherKeyGenerator {
 
     private final int KEY_LENGTH = 8;
-    private final String UPPER = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    private final String LOWER = "abcdefghijklmnopqrstuvwxyz";
-    private final String DIGITS = "0123456789";
-    private final String SYMBOLS = "!@#$%&?";
-    private final String ALL_CHARS = UPPER + LOWER + DIGITS + SYMBOLS;
+    private final String ALL_CHARS = generateAllChars();
     private final Path PATH_ALPHABET_JSON = Path.of("src/main/java/com/example/enigma/JSON/alphabetKeys.json");
 
     private final Random random = new Random();
@@ -27,7 +23,7 @@ public class CipherKeyGenerator {
         StringBuilder keyWithoutEncryption = new StringBuilder(extractKeyFromCiphertext(ciphertext, shift));
 
         while (keyWithoutEncryption.length() < KEY_LENGTH) {
-            keyWithoutEncryption.append(LOWER.charAt(random.nextInt(LOWER.length())));
+            keyWithoutEncryption.append(ALL_CHARS.charAt(random.nextInt(ALL_CHARS.length())));
         }
 
         StringBuilder keyWithEncryption = new StringBuilder();
@@ -102,4 +98,23 @@ public class CipherKeyGenerator {
     }
     //---------------------------------------------------------------------------------------------------------
 
+    public static String generateAllChars() {
+        StringBuilder builder = new StringBuilder();
+
+        for (char ch = 'A'; ch <= 'Z'; ch++) {
+            builder.append(ch);
+        }
+
+        for (char ch = 'a'; ch <= 'z'; ch++) {
+            builder.append(ch);
+        }
+
+        for (char ch = '0'; ch <= '9'; ch++) {
+            builder.append(ch);
+        }
+
+        builder.append("!@#$%&?");
+
+        return builder.toString();
+    }
 }
