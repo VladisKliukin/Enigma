@@ -7,10 +7,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import com.example.enigma.Assistants.DecryptAssistant;
 import com.example.enigma.Assistants.EncryptionAssistant;
 import com.example.enigma.Enums.EWindowType;
-import com.example.enigma.Helpers.CipherKeyGenerator;
 import com.example.enigma.Managers.ManagerWindow;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -28,6 +26,8 @@ public class EncryptController extends BaseController {
     //---------------------------------------------------------------------------------------------------------
     EncryptionAssistant encryptionAssistant;
     boolean bIsEncryptionCreated = false;
+    int currentShift = 0;
+    String encryptTextTemp;
 
     public EncryptController() {
         ownerWindowType = EWindowType.WINDOW_DECRYPT;
@@ -110,19 +110,27 @@ public class EncryptController extends BaseController {
             return;
         }
 
-        if (bIsValidOperation && !bIsEncryptionCreated) {
-            // bIsEncryptionCreated = true;
-            String ciphertextText = encryptionAssistant.applyEncryption(encryptText, shift);
+        if (currentShift != shift || !encryptText.equals(encryptTextTemp)) {
+            bIsEncryptionCreated = false;
+        }
 
+
+        if (bIsValidOperation && !bIsEncryptionCreated) {
+            bIsEncryptionCreated = true;
+            currentShift = shift;
+            encryptTextTemp = encryptText;
+
+            String ciphertextText = encryptionAssistant.applyEncryption(encryptText, shift);
             startActionEncryption(ciphertextText, 5);
-            keyEncryptText.setText(encryptionAssistant.createEncryptionKey(ciphertextText, shift));
-            //------------------------------------------
-            CipherKeyGenerator generator = new CipherKeyGenerator();
-            DecryptAssistant decryptAssistant = new DecryptAssistant();
-            String key = decryptAssistant.decryptKey(keyEncryptText.getText());
-            System.out.printf("Key: " + key+ "\n");
-          ///  System.out.printf("Key real: " + generator.extractRealKeyPart(keyEncryptText.getText(), generator.getReversedAlphabetMap()));
-            System.out.printf("\nKey Shift: " + Integer.toString(decryptAssistant.extractShiftFromKey(ciphertextText,keyEncryptText.getText())));
+
+
+            String key = encryptionAssistant.createEncryptionKey(ciphertextText, shift);
+            if (key == null) {
+                throw new IllegalArgumentException("handleEventButtonEncrypt -> Key == null");
+            }
+            keyEncryptText.setText(key);
+
+
         }
     }
 

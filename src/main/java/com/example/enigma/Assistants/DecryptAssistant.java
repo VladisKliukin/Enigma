@@ -1,46 +1,23 @@
 package com.example.enigma.Assistants;
 
 
-import com.example.enigma.Helpers.CipherKeyGenerator;
+import com.example.enigma.Managers.EncryptionKeyManager;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class DecryptAssistant {
     ObjectMapper mapper = new ObjectMapper();
-    CipherKeyGenerator cipherKeyGenerator = new CipherKeyGenerator();
+    EncryptionKeyManager cipherKeyGenerator = new EncryptionKeyManager();
 
 
     public String decryptKey(String encryptedKey) {
-        Map<Character, String> alphabetKeys = cipherKeyGenerator.getAlphabetKeys();
-        if (alphabetKeys == null || encryptedKey == null) return null;
-
-        Map<String, Character> reverseMap = new HashMap<>();
-        for (Map.Entry<Character, String> entry : alphabetKeys.entrySet()) {
-            reverseMap.put(entry.getValue(), entry.getKey());
-        }
-
-        StringBuilder originalKey = new StringBuilder();
-
-        for (int i = 0; i < encryptedKey.length(); i += 2) {
-            String encryptedPair = encryptedKey.substring(i, i + 2);
-            Character originalChar = reverseMap.get(encryptedPair);
-            originalKey.append(originalChar);
-        }
-
-
-        return originalKey.toString();
+        return cipherKeyGenerator.decryptKey(encryptedKey);
     }
 
-    public int extractShiftFromKey(String encryptedText, String key) {
-        CipherKeyGenerator generator = new CipherKeyGenerator();
+    public int extractShiftFromKey(String key) {
 
+cipherKeyGenerator.DecryptKeyToShift(key);
 
-       return 0;// generator.DecryptKeyToShift(key);
+        return  cipherKeyGenerator.DecryptKeyToShift(key);
 
     }
 

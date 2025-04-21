@@ -1,7 +1,7 @@
 package com.example.enigma.Assistants;
 
 
-import com.example.enigma.Helpers.CipherKeyGenerator;
+import com.example.enigma.Managers.EncryptionKeyManager;
 
 public class EncryptionAssistant {
 
@@ -49,7 +49,7 @@ public class EncryptionAssistant {
 
     //---------------------------------------------------------------------------------------------------------
     public String createEncryptionKey(String text, int shift) {
-        CipherKeyGenerator generator = new CipherKeyGenerator();
+        EncryptionKeyManager generator = new EncryptionKeyManager();
         return generator.createEncryptionKey(shift);
     }
     //---------------------------------------------------------------------------------------------------------
