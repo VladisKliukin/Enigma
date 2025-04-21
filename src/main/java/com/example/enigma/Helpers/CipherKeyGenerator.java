@@ -12,44 +12,64 @@ import java.util.*;
 public class CipherKeyGenerator {
 
     private final int KEY_LENGTH = 8;
-    private final int REAL_KEY_PART_LENGTH = 3;
+    private final int REAL_KEY_PART_LENGTH = 8;
     private final String ALL_CHARS = generateAllChars();
     private final Path PATH_ALPHABET_JSON = Path.of("src/main/java/com/example/enigma/JSON/alphabetKeys.json");
+    private final Path PATH_ENCRYPTION_TABLE_JSON = Path.of("src/main/java/com/example/enigma/JSON/encryptionTable.json");
     private final ObjectMapper objectMapper = new ObjectMapper();
     private final Random random = new Random();
 
-    // Генерация полного ключа (3 символа из шифротекста, остальные случайные)
+
     public String createEncryptionKey(String ciphertext, int shift) {
         Map<Character, String> alphabetKeys = generateAlphabetKeys();
+        StringBuilder key = new StringBuilder();
 
 
-        // Извлекаем "реальные" символы из текста
-        StringBuilder keyFromText = new StringBuilder();
-        int index = 0;  // Начинаем с первого символа
-        while (keyFromText.length() < REAL_KEY_PART_LENGTH) {
-            char currentChar = ciphertext.charAt(index);
-            if (Character.isLetter(currentChar)) {
-                keyFromText.append(currentChar);
-            }
-            index = (index + shift) % ciphertext.length();  // Переход к следующему символу по кругу
+        String binary = String.format("%8s", Integer.toBinaryString(shift)).replace(' ', '0');
+
+        for (char bit : binary.toCharArray()) {
+            key.append(bit == '0' ? 'X' : 'Y'); // X = 0, Y = 1
         }
 
-        // Добавляем случайные символы
-        while (keyFromText.length() < KEY_LENGTH) {
-            keyFromText.append(ALL_CHARS.charAt(random.nextInt(ALL_CHARS.length())));
+        System.out.printf("Key: " + Integer.parseInt(binary) + "\n");
+        System.out.printf("Key2: " + key + "\n");
+
+
+        while (key.length() < KEY_LENGTH) {
+            key.append(ALL_CHARS.charAt(random.nextInt(ALL_CHARS.length())));
         }
 
-        // Шифруем
         StringBuilder encryptedKey = new StringBuilder();
         for (int i = 0; i < KEY_LENGTH; i++) {
-            char ch = keyFromText.charAt(i);
+            char ch = key.charAt(i);
             encryptedKey.append(alphabetKeys.getOrDefault(ch, String.valueOf(ch)));
         }
 
         return encryptedKey.toString();
     }
 
-    // Генерация карты символов
+
+    public String createEncryptionKey(int shift) {
+        Map<String, List<String>> encryptionTable = jsonEncoder();
+        String binary = String.format("%8s", Integer.toBinaryString(shift)).replace(' ', '0');
+        StringBuilder key = new StringBuilder();
+
+        for (int i = 0; i < binary.length(); i++) {
+
+            List<String> binaryKey =  encryptionTable.get(String.valueOf(binary.charAt(i)));
+
+
+
+            System.out.printf("Key: " + binaryKey + "\n");
+        }
+
+
+
+        return key.toString();
+
+    }
+
+    //---------------------------------------------------------------------------------------------------------
     private Map<Character, String> generateAlphabetKeys() {
         Map<Character, String> alphabetKeys = new HashMap<>();
 
@@ -75,7 +95,8 @@ public class CipherKeyGenerator {
             }
         } else {
             try {
-                alphabetKeys = objectMapper.readValue(PATH_ALPHABET_JSON.toFile(), new TypeReference<>() {});
+                alphabetKeys = objectMapper.readValue(PATH_ALPHABET_JSON.toFile(), new TypeReference<>() {
+                });
             } catch (IOException e) {
                 System.err.println("Error reading alphabet JSON: " + e.getMessage());
             }
@@ -84,7 +105,7 @@ public class CipherKeyGenerator {
         return alphabetKeys;
     }
 
-    // Обратная карта для расшифровки
+    //---------------------------------------------------------------------------------------------------------
     public Map<String, Character> getReversedAlphabetMap() {
         Map<Character, String> originalMap = getAlphabetKeys();
         Map<String, Character> reverseMap = new HashMap<>();
@@ -98,17 +119,18 @@ public class CipherKeyGenerator {
         return reverseMap;
     }
 
-    // Получение оригинальной карты
+    //---------------------------------------------------------------------------------------------------------
     public Map<Character, String> getAlphabetKeys() {
         try {
-            return objectMapper.readValue(PATH_ALPHABET_JSON.toFile(), new TypeReference<>() {});
+            return objectMapper.readValue(PATH_ALPHABET_JSON.toFile(), new TypeReference<>() {
+            });
         } catch (IOException e) {
             System.err.println("Error reading alphabet JSON: " + e.getMessage());
             return null;
         }
     }
 
-    // Расшифровка первых 3 символов ключа
+    //---------------------------------------------------------------------------------------------------------
     public String extractRealKeyPart(String encryptedKey, Map<String, Character> reverseMap) {
         StringBuilder decrypted = new StringBuilder();
         for (int i = 0; i < REAL_KEY_PART_LENGTH * 2; i += 2) {
@@ -121,8 +143,8 @@ public class CipherKeyGenerator {
         return decrypted.toString();
     }
 
-    // Генерация всех допустимых символов
-    public static String generateAllChars() {
+    //---------------------------------------------------------------------------------------------------------
+    public String generateAllChars() {
         StringBuilder builder = new StringBuilder();
         for (char ch = 'A'; ch <= 'Z'; ch++) builder.append(ch);
         for (char ch = 'a'; ch <= 'z'; ch++) builder.append(ch);
@@ -130,4 +152,32 @@ public class CipherKeyGenerator {
         builder.append("!@#$%&?");
         return builder.toString();
     }
+
+    public int DecryptKeyToShift(String key) {
+
+        String realKeyPart = extractRealKeyPart(key, getReversedAlphabetMap());
+
+        StringBuilder binary = new StringBuilder();
+
+        for (char ch : realKeyPart.toCharArray()) {
+            binary.append(ch == 'X' ? '0' : '1');
+        }
+        return Integer.parseInt(binary.toString(), 2);
+    }
+
+    public Map<String, List<String>> jsonEncoder() {
+        Map<String, List<String>> encryptionTable = null;
+        try {
+            encryptionTable = objectMapper.readValue(PATH_ENCRYPTION_TABLE_JSON.toFile(), new TypeReference<>() {
+            });
+            // Пример доступа к данным в JSON
+            System.out.println("00: " + encryptionTable.get("00"));
+            System.out.println("01: " + encryptionTable.get("01"));
+        } catch (IOException e) {
+            System.err.println("Error JSON: " + e.getMessage());
+        }
+        return encryptionTable;
+    }
+
+
 }

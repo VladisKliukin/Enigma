@@ -37,7 +37,11 @@ public class DecryptAssistant {
     }
 
     public int extractShiftFromKey(String encryptedText, String key) {
-        return -1;
+        CipherKeyGenerator generator = new CipherKeyGenerator();
+
+
+       return 0;// generator.DecryptKeyToShift(key);
+
     }
 
 }

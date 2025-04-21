@@ -50,7 +50,7 @@ public class EncryptionAssistant {
     //---------------------------------------------------------------------------------------------------------
     public String createEncryptionKey(String text, int shift) {
         CipherKeyGenerator generator = new CipherKeyGenerator();
-        return generator.createEncryptionKey(text, shift);
+        return generator.createEncryptionKey(shift);
     }
     //---------------------------------------------------------------------------------------------------------
 

@@ -121,7 +121,7 @@ public class EncryptController extends BaseController {
             DecryptAssistant decryptAssistant = new DecryptAssistant();
             String key = decryptAssistant.decryptKey(keyEncryptText.getText());
             System.out.printf("Key: " + key+ "\n");
-            System.out.printf("Key real: " + generator.extractRealKeyPart(keyEncryptText.getText(), generator.getReversedAlphabetMap()));
+          ///  System.out.printf("Key real: " + generator.extractRealKeyPart(keyEncryptText.getText(), generator.getReversedAlphabetMap()));
             System.out.printf("\nKey Shift: " + Integer.toString(decryptAssistant.extractShiftFromKey(ciphertextText,keyEncryptText.getText())));
         }
     }
