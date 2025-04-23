@@ -4,7 +4,7 @@ package com.example.enigma.Assistants;
 import com.example.enigma.Managers.EncryptionKeyManager;
 
 public class EncryptionAssistant {
-
+    final int NUMBER_LETTERS = 26;
     //---------------------------------------------------------------------------------------------------------
 
     public int isShiftValid(String text) {
@@ -37,7 +37,7 @@ public class EncryptionAssistant {
         for (char currentChar : text.toCharArray()) {
             if (Character.isLetter(currentChar)) {
                 char baseChar = Character.isUpperCase(currentChar) ? 'A' : 'a';
-                encryptedText.append((char) ((currentChar - baseChar + shift) % 26 + baseChar));
+                encryptedText.append((char) ((currentChar - baseChar + shift) % NUMBER_LETTERS + baseChar));
             } else {
                 encryptedText.append(currentChar);
             }
