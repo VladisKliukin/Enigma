@@ -3,7 +3,7 @@ module com.example.enigma {
     requires javafx.fxml;
 
     requires com.dlsc.formsfx;
-    requires java.xml;
+    requires com.fasterxml.jackson.databind;
 
 
     opens com.example.enigma to javafx.fxml;
